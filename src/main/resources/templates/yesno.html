@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Monthly Meetings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            padding: 10px;
+            font-size: 24px;
+        }
+
+        .container {
+            margin: 20px;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 10px;
+        }
+
+        .day {
+            text-align: center;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 10px;
+        }
+
+        .day.today {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        .meeting {
+            text-align: left;
+            padding: 5px;
+        }
+
+        .meeting-happened {
+            color: #0a0;
+        }
+
+        .meeting-not-happened {
+            color: #f00;
+        }
+
+        .meeting-button {
+            display: block;
+            margin-top: 5px;
+            padding: 5px;
+        }
+
+        .history-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <span id="current-month"></span>
+        <span id="current-quarter"></span>
+    </div>
+    <div class="container">
+        <div class="day">Sun</div>
+        <div class="day">Mon</div>
+        <div class="day">Tue</div>
+        <div class="day">Wed</div>
+        <div class="day">Thu</div>
+        <div class="day">Fri</div>
+        <div class="day">Sat</div>
+
+        <!-- Example data -->
+        <div class="day"></div>
+        <div class="day today">1</div>
+        <div class="day">2</div>
+        <div class="day">3</div>
+        <div class="day">4</div>
+        <div class="day">5</div>
+        <div class="day">6</div>
+
+        <!-- Example meetings -->
+        <div class="meeting meeting-happened">Meeting A (Happened)</div>
+        <div class="meeting meeting-happened">Meeting B (Happened)</div>
+        <div class="meeting meeting-not-happened">Meeting C (Not Happened)</div>
+        <div class="meeting meeting-happened">Meeting D (Happened)</div>
+        <div class="meeting meeting-not-happened">Meeting E (Not Happened)</div>
+
+        <!-- Buttons for marking meetings -->
+        <button class="meeting-button" onclick="markMeeting('A', 'happened')">Mark Meeting A as Happened</button>
+        <button class="meeting-button" onclick="markMeeting('B', 'happened')">Mark Meeting B as Happened</button>
+        <button class="meeting-button" onclick="markMeeting('C', 'not-happened')">Mark Meeting C as Not
+            Happened</button>
+        <button class="meeting-button" onclick="markMeeting('D', 'happened')">Mark Meeting D as Happened</button>
+        <button class="meeting-button" onclick="markMeeting('E', 'not-happened')">Mark Meeting E as Not
+            Happened</button>
+        <button class="history-button" onclick="checkMeetingHistory()">Check Meeting History</button>
+    </div>
+
+    <script>
+        // Function to get the current quarter
+        function getCurrentQuarter() {
+            const currentDate = new Date();
+            const month = currentDate.getMonth();
+
+            if (month >= 0 && month <= 2) {
+                return 'Q1';
+            } else if (month >= 3 && month <= 5) {
+                return 'Q2';
+            } else if (month >= 6 && month <= 8) {
+                return 'Q3';
+            } else {
+                return 'Q4';
+            }
+        }
+
+        // Function to format the current date
+        function formatCurrentDate() {
+            const currentDate = new Date();
+            const monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            const currentMonth = monthNames[currentDate.getMonth()];
+            const currentYear = currentDate.getFullYear();
+
+            return currentMonth + ' ' + currentYear;
+        }
+
+        // Set the current month and quarter in the header
+        document.getElementById('current-month').textContent = formatCurrentDate();
+        document.getElementById('current-quarter').textContent = 'Business Quarter: ' + getCurrentQuarter();
+
+        // Function to mark a meeting
+        function markMeeting(meetingName, status) {
+            const meetingElement = document.querySelector('.meeting:contains("' + meetingName + '")');
+
+            if (meetingElement) {
+                if (status === 'happened') {
+                    meetingElement.classList.remove('meeting-not-happened');
+                    meetingElement.classList.add('meeting-happened');
+                } else if (status === 'not-happened') {
+                    meetingElement.classList.remove('meeting-happened');
+                    meetingElement.classList add('meeting-not-happened');
+                }
+            }
+        }
+
+        // Function to check meeting history
+        function checkMeetingHistory() {
+            // You can implement this function to display meeting history as needed.
+            alert('Implement the function to check meeting history here.');
+        }
+
+        // Custom jQuery selector to find elements containing text
+        $.extend($.expr[":"], {
+            contains: function (elem, i, match) {
+                return (
+                    elem.textContent || elem.innerText || ""
+                ).toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+            },
+        });
+    </script>
+</body>
+
+</html>
